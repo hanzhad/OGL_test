@@ -1,0 +1,14 @@
+{
+  "development": {
+    "mongodb": {
+      "connectionString": "mongodb://mongodb/db",
+      "options": { "useNewUrlParser": true, "useUnifiedTopology": true, "connectTimeoutMS": 10000 }
+    }
+  },
+  "production": {
+    "mongodb": {
+      "connectionString": "mongodb://mongodb/db",
+      "options": { "useNewUrlParser": true, "useUnifiedTopology": true }
+    }
+  }
+}
