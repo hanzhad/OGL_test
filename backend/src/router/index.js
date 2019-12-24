@@ -1,25 +1,8 @@
 import express from 'express';
-import throwInternalError from '../utils/throwInternalError';
+import category from './category';
 
 const router = express.Router();
 
-router
-  .route('/test')
-  .get(
-    throwInternalError(
-      (req, res) => {
-        res.send({
-          name: 'test',
-        });
-      }
-    )
-  )
-  .post(
-    throwInternalError(
-      () => {
-        throw new Error('test error');
-      }
-    )
-  );
+router.use('/category', category);
 
 export default router;
