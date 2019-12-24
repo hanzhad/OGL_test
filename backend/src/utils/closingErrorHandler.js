@@ -13,8 +13,8 @@ export default (err, req, res, next) => {
     next(err);
   }
   if (!err.code) {
-    res.status(500).json(err.message);
+    res.status(500).json(err);
   } else {
-    res.status(err.code).json(err.message);
+    res.status(err.code).json(err);
   }
 };
