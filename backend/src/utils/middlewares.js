@@ -12,7 +12,7 @@ export const validate = (req, res, next) => {
   }
 };
 
-export const validateModelIdFromReq = (model, type = 'params', value = 'id', isOptional = false) => throwInternalError(async (req, res, next) => {
+export const validateModelIdFromReq = (model, objectName = 'model', type = 'params', value = 'id', isOptional = false) => throwInternalError(async (req, res, next) => {
   const param = _.get(req[type], value);
   let result = {};
   if (!isOptional || param) {
@@ -21,6 +21,6 @@ export const validateModelIdFromReq = (model, type = 'params', value = 'id', isO
       return errorHandler(next, { code: 404 });
     }
   }
-  req.model = result;
+  _.set(req, objectName, result);
   return next();
 });
