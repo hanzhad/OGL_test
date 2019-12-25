@@ -12,12 +12,15 @@ export const validate = (req, res, next) => {
   }
 };
 
-export const validateModelItem = (model) => throwInternalError(async (req, res, next) => {
-  const result = await model.findOne({ _id: req.params.id, isDeleted: false });
-  if (_.isNil(result)) {
-    errorHandler(next, { code: 404 });
-  } else {
-    req.model = result;
-    next();
+export const validateModelIdFromReq = (model, type = 'params', value = 'id', isOptional = false) => throwInternalError(async (req, res, next) => {
+  const param = _.get(req[type], value);
+  let result = {};
+  if (!isOptional || param) {
+    result = await model.findOne({ _id: param, isDeleted: false });
+    if (_.isEmpty(result)) {
+      return errorHandler(next, { code: 404 });
+    }
   }
+  req.model = result;
+  return next();
 });

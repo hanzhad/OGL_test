@@ -3,10 +3,13 @@ import { body, param } from 'express-validator';
 import _ from 'lodash';
 import { Types } from 'mongoose';
 import {
-  create, getAll, getById, getCategoryList, getChildrenCategories, update, deleteById
+  getCategoryList, getChildrenCategories,
 } from '../controllers/Category';
-import { validate, validateModelItem } from '../utils/middlewares';
+import { validate, validateModelIdFromReq } from '../utils/middlewares';
 import Category from '../models/Category';
+import {
+  getById, update, deleteById, getAll, create,
+} from '../controllers/baseCRUD';
 
 const router = express.Router();
 
@@ -15,7 +18,7 @@ router
   .get([
     param('id').custom(Types.ObjectId.isValid),
     validate,
-    validateModelItem(Category),
+    validateModelIdFromReq(Category),
   ], getById)
   .put([
     param('id').custom(Types.ObjectId.isValid),
@@ -24,30 +27,31 @@ router
     body('isDeleted').optional().isBoolean(),
     body('parentId').optional().custom((v) => _.isNull(v) || Types.ObjectId.isValid(v)),
     validate,
-    validateModelItem(Category),
-  ], update)
+    validateModelIdFromReq(Category),
+  ], update(Category))
   .delete([
     param('id').custom(Types.ObjectId.isValid),
     validate,
-    validateModelItem(Category),
-  ], deleteById);
+    validateModelIdFromReq(Category),
+  ], deleteById(Category));
 
 router
   .route('/')
-  .get(getAll)
+  .get(getAll(Category))
   .post([
     body('title').trim().notEmpty().isString(),
     body('parentId').optional().custom((v) => _.isNull(v) || Types.ObjectId.isValid(v)),
     body('isDeleted').optional().isBoolean(),
     validate,
-  ], create);
+    validateModelIdFromReq(Category, 'body', 'parentId', true),
+  ], create(Category));
 
 router
   .route('/list/:id')
   .get([
     param('id').custom(Types.ObjectId.isValid),
     validate,
-    validateModelItem(Category),
+    validateModelIdFromReq(Category),
   ], getCategoryList);
 
 router
@@ -55,7 +59,7 @@ router
   .get([
     param('id').custom(Types.ObjectId.isValid),
     validate,
-    validateModelItem(Category),
+    validateModelIdFromReq(Category),
   ], getChildrenCategories);
 
 
