@@ -25,8 +25,8 @@ export const update = (Model) => throwInternalError(
     const data = req.body;
     let { model } = req;
 
-    const { nModified } = await Model.update({ _id: req.params.id }, data);
-    if (nModified > 1) {
+    const { nModified } = await Model.updateOne({ _id: req.params.id }, data);
+    if (nModified > 0) {
       model = await Model.findOne({ _id: req.params.id });
     }
 
