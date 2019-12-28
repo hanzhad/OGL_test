@@ -1,5 +1,6 @@
 import http from 'http';
 import express from 'express';
+import cors from 'cors';
 import requestLogger from './utils/requestLogger';
 import closingErrorHandler from './utils/closingErrorHandler';
 import logger from './utils/logger';
@@ -17,6 +18,7 @@ require('./config/mongoose');
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 

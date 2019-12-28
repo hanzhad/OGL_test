@@ -38,7 +38,7 @@ export const deleteById = (Model) => throwInternalError(
   async (req, res) => {
     const { model } = req;
 
-    await Model.update({ _id: req.params.id }, { isDeleted: true });
+    await Model.updateOne({ _id: req.params.id }, { isDeleted: true });
     model.isDeleted = true;
 
     res.send(model);

@@ -11,7 +11,6 @@ services:
       - "3001:3001"
     volumes:
       - ./frontend:/frontend
-      - /frontend/node_modules
 
   backend:
     build:
@@ -20,7 +19,7 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - "3000:3000"
+      - "0.0.0.0:3000:3000"
     volumes:
       - ./backend:/backend
 
@@ -37,7 +36,7 @@ services:
     command: --logpath /dev/null
 
 volumes:
-  backend:
   frontend:
+  backend:
   mongodb:
 

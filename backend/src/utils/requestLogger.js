@@ -4,6 +4,7 @@ import logger from './logger';
 
 const regexs = [
   /(.+)\.(js|css|woff.?|png|ico)$/g,
+  /X_LOCAL_SECURITY_COOKIE/g,
 ];
 
 const urlsWithDisabledLogs = [

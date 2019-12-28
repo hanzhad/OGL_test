@@ -28,11 +28,13 @@
     "eslint-plugin-react-hooks": "^1.7.0"
   },
   "dependencies": {
+    "nodemon": "^2.0.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-validator": "^6.3.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongoose": "^5.8.3",
-    "winston": "^3.2.1",
-    "express-validator": "^6.3.0"
+    "winston": "^3.2.1"
   }
 }
