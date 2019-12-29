@@ -9,9 +9,9 @@ export const getCategoryList = throwInternalError(
 
     const collectAllParents = async (child, acc) => {
       const parent = await Category.findOne({ _id: _.get(child, 'parentId'), isDeleted: false });
-      acc.unshift(parent);
 
-      if (!_.isNil(_.get(parent, 'parentId'))) {
+      if (!_.isNil(parent)) {
+        acc.unshift(parent);
         await collectAllParents(parent, acc);
       }
     };

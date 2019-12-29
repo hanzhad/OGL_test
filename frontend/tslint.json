@@ -1,10 +1,32 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier", "tslint-eslint-rules"],
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
       "node_modules/**/*.ts",
       "coverage/lcov-report/*.js"
     ]
+  },
+  "defaultSeverity": "warning",
+  "rules": {
+    "jsx-boolean-value": "always",
+    "no-console": [false, "info", "error"],
+    "comma-dangle": ["error", "always-multiline"],
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "eol-last": ["error", "always"],
+    "no-multiple-empty-lines": ["error"],
+    "no-new-symbol": "error",
+    "no-trailing-spaces": ["error"],
+    "no-undef": ["error"],
+    "no-unused-vars": ["error"],
+    "object-curly-spacing": ["error", "always"],
+    "object-shorthand": "error",
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "space-in-parens": ["error", "never"],
+    "strict": [2, "never"],
+    "space-infix-ops": ["error", {"int32Hint": false}],
+    "arrow-spacing": "error",
+    "object-literal-sort-keys": false
   }
 }
