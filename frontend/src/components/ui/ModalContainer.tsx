@@ -76,7 +76,7 @@ export default (props: IModalContainer) => {
             [classes.paperXl]: size === 'xl',
             [classes.paperXxl]: size === 'xxl',
             [classes.paperXxxl]: size === 'xxxl',
-        }), 'sst-modal');
+        }));
         _.forEach({ ...styles, ...rest }, (i) => className = classNames(className, i));
         return className;
     }

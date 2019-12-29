@@ -14,6 +14,12 @@ reducer.on(setArticlesAction, (state, data) => ({
   articles: data,
 }));
 
+export const setArticleAction = createAction<IArticle>('SET_ARTICLE_ACTION');
+reducer.on(setArticleAction, (state, data) => ({
+  ...state,
+  article: data,
+}));
+
 export const addArticleAction = createAction<IArticle>('ADD_ARTICLE_ACTION');
 reducer.on(addArticleAction, (state, data) => ({
   ...state,

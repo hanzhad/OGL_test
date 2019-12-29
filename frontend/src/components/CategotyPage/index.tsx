@@ -13,18 +13,8 @@ import {IArticle} from '../../store/reducers/articleReducer';
 import {ICategory} from '../../store/reducers/categoryReducer';
 import {IRecipe} from '../../store/reducers/recipeReducer';
 import CollapsedBreadcrumbs from '../ui/CollapsedBreadcrumbs';
+import FormModal, {IField} from '../ui/FormModal';
 import PageColumn from './PageColumn';
-
-interface IProps extends RouteComponentProps<any> {
-    categories: ICategory[];
-    articles: IArticle[];
-    recipes: IRecipe[];
-    classes: any;
-    getArticles: (id: ICategory['_id']) => any;
-    getAllArticles: () => any;
-    getRecipes: (id: ICategory['_id']) => any;
-    getAllRecipes: () => any;
-}
 
 const styles = (theme: Theme) => ({
     container: {
@@ -47,7 +37,36 @@ const styles = (theme: Theme) => ({
     },
 });
 
+interface IProps extends RouteComponentProps<any> {
+    categories: ICategory[];
+    articles: IArticle[];
+    recipes: IRecipe[];
+    classes: any;
+    getArticles: (id: ICategory['_id']) => any;
+    getAllArticles: () => any;
+    createArticle: (data: IArticle) => any;
+    getRecipes: (id: ICategory['_id']) => any;
+    getAllRecipes: () => any;
+    createRecipe: (body: IRecipe) => any;
+}
+
+interface IState {
+    modalData: {
+        isActive: boolean;
+        onSave?: (data?: any) => any;
+        onClose?: () => any;
+        header?: string;
+        data?: any;
+        fields?: IField[];
+    }
+}
+
 class CategoryPage extends Component<IProps> {
+    public state = {
+        modalData: {
+            isActive: false,
+        }
+    };
 
     public async componentDidMount() {
         const {match, getArticles, getAllArticles, getRecipes, getAllRecipes} = this.props;
@@ -77,55 +96,141 @@ class CategoryPage extends Component<IProps> {
         }
     }
 
+    public setModalData = (data: IState['modalData']) => {
+        this.setState((state) => ({...state, modalData: data}))
+    };
+
+    public onModalFormFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const {modalData} = this.state;
+        const name = _.get(event, 'target.name');
+        const value =  _.get(event, 'target.value');
+
+        this.setModalData({
+            ...modalData, data: {
+                ..._.get(modalData, 'data'),
+                [name]: value
+            }
+        })
+    };
+
+    public renderArticleColumn = () => {
+        const {match, articles, history, createArticle} = this.props;
+        const currentCategoryId = _.get(match, 'params.id');
+
+        return (
+            <PageColumn
+                header='Articles'
+                fields={articles}
+                onDetailsClick={(item) => history.push(`/article/${_.get(item, '_id')}`)}
+                actionButton={{
+                    disabled: _.isNil(currentCategoryId),
+                    onClick: () => this.setModalData({
+                        isActive: true,
+                        onClose: () => this.setModalData({isActive: false}),
+                        onSave: createArticle,
+                        header: 'Create new Article',
+                        data: {
+                            title: 'name',
+                            categoryId: currentCategoryId,
+                        },
+                        fields: [
+                            {
+                                id: 'title',
+                                label: 'Article Name',
+                                autoFocus: true,
+                                onChange: this.onModalFormFieldChange,
+                            },
+                            {
+                                id: 'description',
+                                label: 'Description',
+                                onChange: this.onModalFormFieldChange,
+                            },
+                            {
+                                id: 'text',
+                                label: 'Text',
+                                multiline: true,
+                                onChange: this.onModalFormFieldChange,
+                            },
+                        ],
+                    }),
+                }}
+                fieldsMap={[
+                    {
+                        key: 'title',
+                        name: 'Title',
+                    },
+                    {
+                        key: 'description',
+                        name: 'Description',
+                    },
+                ]}
+            />
+        )
+    };
+
+    public renderRecipeColumn = () => {
+        const {match, recipes, history, createRecipe} = this.props;
+        const currentCategoryId = _.get(match, 'params.id');
+
+        return (
+            <PageColumn
+                header='Recipes'
+                fields={recipes}
+                onDetailsClick={(item) => history.push(`/recipe/${_.get(item, '_id')}`)}
+                actionButton={{
+                    disabled: _.isNil(currentCategoryId),
+                    onClick: () => this.setModalData({
+                        isActive: true,
+                        onClose: () => this.setModalData({isActive: false}),
+                        onSave: createRecipe,
+                        header: 'Create new Recipe',
+                        data: {
+                            title: 'name',
+                            categoryId: currentCategoryId,
+                        },
+                        fields: [
+                            {
+                                id: 'title',
+                                label: 'Recipe Name',
+                                autoFocus: true,
+                                onChange: this.onModalFormFieldChange,
+                            },
+                            {
+                                id: 'text',
+                                label: 'Text',
+                                multiline: true,
+                                onChange: this.onModalFormFieldChange,
+                            },
+                        ],
+                    }),
+                }}
+                fieldsMap={ [
+                    {
+                        key: 'title',
+                        name: 'Title',
+                    },
+                ]}
+            />
+        )
+    };
+
     public render = () => {
-        const {match, history, location, staticContext, categories, classes, articles, recipes} = this.props;
+        const {match, categories, classes } = this.props;
+        const { modalData } = this.state;
         const currentCategoryId = _.get(match, 'params.id');
         const currentCategory = _.find(categories, ['_id', currentCategoryId]);
 
         return (
             <Container className={classes.container}>
+                <FormModal {...modalData} />
                 <Typography variant='h4'>{_.get(currentCategory, 'title', 'All Categories')}</Typography>
                 <Divider />
                 <CollapsedBreadcrumbs
                     className={classes.container}
-                    match={match}
-                    history={history}
-                    location={location}
-                    staticContext={staticContext}
                 />
                 <div className={classes.content}>
-                    <PageColumn
-                        header='Articles'
-                        fields={articles}
-                        actionButton={{
-                            disabled: _.isNil(currentCategoryId),
-                            onClick: _.noop,
-                        }}
-                        fieldsMap={[
-                            {
-                                key: 'title',
-                                name: 'Title',
-                            },
-                            {
-                                key: 'description',
-                                name: 'Description',
-                            },
-                        ]}
-                    />
-                    <PageColumn
-                        header='Recipes'
-                        fields={recipes}
-                        actionButton={{
-                            disabled: _.isNil(currentCategoryId),
-                            onClick: _.noop,
-                        }}
-                        fieldsMap={ [
-                            {
-                                key: 'title',
-                                name: 'Title',
-                            },
-                        ]}
-                    />
+                    {this.renderArticleColumn()}
+                    {this.renderRecipeColumn()}
                 </div>
             </Container>
         )
@@ -147,6 +252,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     getAllRecipes: () => dispatch(actions.getRecipeAction()),
     getRecipes: (id: ICategory['_id']) => dispatch(actions.getRecipeByCategoryIdAction(id)),
+    createRecipe: (body: IRecipe) => dispatch(actions.createRecipeAction(body)),
 });
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CategoryPage));

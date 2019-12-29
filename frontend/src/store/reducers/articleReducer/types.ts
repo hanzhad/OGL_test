@@ -1,5 +1,6 @@
 export interface IArticleStore {
     articles: IArticle[],
+    article?: IArticle,
 }
 
 export interface IArticle {

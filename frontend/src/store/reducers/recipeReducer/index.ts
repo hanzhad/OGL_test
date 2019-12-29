@@ -8,6 +8,11 @@ const initialState: IRecipeStore = {
 
 const reducer = createReducer<IRecipeStore>({}, initialState);
 
+export const setRecipeAction = createAction<IRecipe>('SET_RECIPE_ACTION');
+reducer.on(setRecipeAction, (state, data) => ({
+  ...state,
+  recipe: data,
+}));
 export const setRecipesAction = createAction<IRecipe[]>('SET_RECIPES_ACTION');
 reducer.on(setRecipesAction, (state, data) => ({
   ...state,

@@ -10,7 +10,7 @@ import {IStores} from '../../store/reducers';
 import {ICategory} from '../../store/reducers/categoryReducer';
 import StyledTreeView from '../StyledTreeView';
 import StyledTreeItem from '../StyledTreeView/StyledTreeItem';
-import FormModal, {IField} from './FormModal';
+import FormModal, {IField} from '../ui/FormModal';
 import StyledDrawer from './StyledDrawer';
 
 interface IProps extends RouteComponentProps<any> {
@@ -49,7 +49,7 @@ class OGLDrawer extends Component<IProps, IState> {
         const {getCategories, getCategoriesParentList, match} = this.props;
         await getCategories();
         const categoryId = _.get(match, 'params.id');
-        console.log('componentDidMount', categoryId)
+        
         if (categoryId) {
             await getCategoriesParentList(categoryId)
         }
@@ -74,11 +74,13 @@ class OGLDrawer extends Component<IProps, IState> {
 
     public onModalFormFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {modalData} = this.state;
+        const name = _.get(event, 'target.name');
+        const value =  _.get(event, 'target.value');
 
         this.setModalData({
             ...modalData, data: {
                 ..._.get(modalData, 'data'),
-                title: _.get(event, 'target.value')
+                [name]: value
             }
         })
     };
@@ -129,9 +131,9 @@ class OGLDrawer extends Component<IProps, IState> {
                             },
                             fields: [
                                 {
+                                    id: 'title',
                                     autoFocus: true,
                                     label: 'Category Name',
-                                    value: (data) => _.get(data, 'title'),
                                     onChange: this.onModalFormFieldChange,
                                 },
                             ],
@@ -152,9 +154,9 @@ class OGLDrawer extends Component<IProps, IState> {
                             },
                             fields: [
                                 {
+                                    id: 'title',
                                     autoFocus: true,
                                     label: 'Category Name',
-                                    value: (data) => _.get(data, 'title'),
                                     onChange: this.onModalFormFieldChange,
                                 },
                             ]

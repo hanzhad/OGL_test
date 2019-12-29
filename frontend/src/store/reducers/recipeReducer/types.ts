@@ -1,5 +1,6 @@
 export interface IRecipeStore {
-    recipes: IRecipe[],
+    recipes: IRecipe[];
+    recipe?: IRecipe;
 }
 
 export interface IRecipe {

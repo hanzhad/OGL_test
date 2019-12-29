@@ -3,7 +3,7 @@ import Link from '@material-ui/core/Link';
 import _ from 'lodash';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {RouteComponentProps} from 'react-router';
+import {RouteComponentProps, withRouter} from 'react-router';
 import {IStores} from '../../store/reducers';
 import {ICategory} from '../../store/reducers/categoryReducer';
 
@@ -66,4 +66,4 @@ const mapStateToProps = (store: IStores) => ({
 
 
 
-export default connect(mapStateToProps)(CollapsedBreadcrumbs);
+export default withRouter(connect(mapStateToProps)(CollapsedBreadcrumbs));

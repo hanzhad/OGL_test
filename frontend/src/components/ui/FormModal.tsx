@@ -6,12 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import React, {ChangeEvent} from 'react';
-import ModalContainer, {IModalContainer} from '../ui/ModalContainer';
+import ModalContainer, {IModalContainer} from './ModalContainer';
 
 export interface IField {
+    id: string;
     autoFocus?: boolean;
+    multiline?: boolean;
     label: string;
-    value: (data: any) => string;
     onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
@@ -35,7 +36,10 @@ const useTreeItemStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             margin: theme.spacing(1, 0)
-        }
+        },
+        field: {
+            margin: theme.spacing(1, 0),
+        },
     }),
 );
 
@@ -54,18 +58,23 @@ export default (props: IFormModal) => {
     };
 
     return (
-        <ModalContainer isActive={isActive}>
+        <ModalContainer isActive={isActive} onClose={onClose}>
             <form onSubmit={onSubmit} >
                 <Typography className={classes.label} variant='h6'>{header}</Typography>
                 <Divider />
                 <Container className={classes.body}>
                     {_.map(fields, (f: IField) => {
-                        const {value, autoFocus, label, onChange} = f;
-                        const textValue = value(data);
+                        const { autoFocus, label, onChange, multiline, id} = f;
 
                         return (
                             <TextField
-                                value={textValue}
+                                className={classes.field}
+                                fullWidth={true}
+                                key={id}
+                                name={id}
+                                rows={4}
+                                value={_.get(data, id)}
+                                multiline={multiline}
                                 autoFocus={autoFocus}
                                 label={label}
                                 onChange={onChange}
