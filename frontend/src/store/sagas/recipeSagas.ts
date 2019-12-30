@@ -8,12 +8,14 @@ import {
     addRecipeAction, editRecipeAction, IRecipe, removeRecipeAction, setRecipeAction,
     setRecipesAction
 } from '../reducers/recipeReducer';
+import * as Toast from '../../utils/Tosts/Toast';
 
 function* getAll() {
     try {
         const {data} = yield call(axios.get, `${apiUrl}/recipe`);
         yield put(setRecipesAction(data));
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -23,6 +25,7 @@ function* getById({payload}: { payload: IRecipe['_id'] }) {
         const {data} = yield call(axios.get, `${apiUrl}/recipe/${payload}`);
         yield put(setRecipeAction(data));
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -32,6 +35,7 @@ function* getByCategoryId({payload}: { payload: ICategory['_id'] }) {
         const {data} = yield call(axios.get, `${apiUrl}/recipe/list/${payload}`);
         yield put(setRecipesAction(data));
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -41,6 +45,7 @@ function* create({payload}: { payload: IRecipe }) {
         const {data} = yield call(axios.post, `${apiUrl}/recipe`, payload);
         yield put(addRecipeAction(data))
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -50,6 +55,7 @@ function* remove({payload}: { payload: IRecipe['_id'] }) {
         const {data} = yield call(axios.delete, `${apiUrl}/recipe/${payload}`);
         yield put(removeRecipeAction(data))
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -60,6 +66,7 @@ function* update({payload}: { payload: IRecipe }) {
         yield put(editRecipeAction(data))
         yield put(setRecipeAction(data));
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }

@@ -11,12 +11,14 @@ import {
     setCategoriesAction,
     setCategoriesParentListAction
 } from '../reducers/categoryReducer';
+import * as Toast from '../../utils/Tosts/Toast';
 
 function* getAll() {
     try {
         const {data} = yield call(axios.get, `${apiUrl}/category`);
         yield put(setCategoriesAction(data));
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -26,6 +28,7 @@ function* getParentList({payload}: { payload: ICategory['_id'] }) {
         const {data} = yield call(axios.get, `${apiUrl}/category/list/${payload}`);
         yield put(setCategoriesParentListAction(data));
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -34,8 +37,8 @@ function* create({payload}: { payload: ICategory }) {
     try {
         const {data} = yield call(axios.post, `${apiUrl}/category`, payload);
         yield put(addCategoryAction(data))
-
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -44,8 +47,8 @@ function* remove({payload}: { payload: ICategory['_id'] }) {
     try {
         const {data} = yield call(axios.delete, `${apiUrl}/category/${payload}`);
         yield put(removeCategoryAction(data))
-
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
@@ -54,8 +57,8 @@ function* update({payload}: { payload: ICategory }) {
     try {
         const {data} = yield call(axios.put, `${apiUrl}/category/${_.get(payload, '_id')}`, payload);
         yield put(editCategoryAction(data))
-
     } catch (e) {
+        Toast.errorToast(_.get(e, 'message'));
         console.error(e);
     }
 }
