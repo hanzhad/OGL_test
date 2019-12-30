@@ -1,6 +1,8 @@
 import {Container} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import {Theme, withStyles} from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import React, {Component} from 'react';
@@ -51,6 +53,7 @@ interface IProps extends RouteComponentProps<any> {
 }
 
 interface IState {
+    activeTabId: number;
     modalData: {
         isActive: boolean;
         onSave?: (data?: any) => any;
@@ -63,6 +66,7 @@ interface IState {
 
 class CategoryPage extends Component<IProps> {
     public state = {
+        activeTabId: 0,
         modalData: {
             isActive: false,
         }
@@ -78,7 +82,6 @@ class CategoryPage extends Component<IProps> {
             await getAllArticles();
             await getAllRecipes();
         }
-
     }
 
     public async componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any) {
@@ -214,9 +217,13 @@ class CategoryPage extends Component<IProps> {
         )
     };
 
+    public handleChangeActiveTab = (event: React.ChangeEvent<{}>, newValue: number) => {
+        this.setState({activeTabId: newValue});
+    };
+
     public render = () => {
         const {match, categories, classes } = this.props;
-        const { modalData } = this.state;
+        const { modalData, activeTabId } = this.state;
         const currentCategoryId = _.get(match, 'params.id');
         const currentCategory = _.find(categories, ['_id', currentCategoryId]);
 
@@ -228,10 +235,12 @@ class CategoryPage extends Component<IProps> {
                 <CollapsedBreadcrumbs
                     className={classes.container}
                 />
-                <div className={classes.content}>
-                    {this.renderArticleColumn()}
-                    {this.renderRecipeColumn()}
-                </div>
+                <Tabs variant="fullWidth" value={activeTabId} centered={true} onChange={this.handleChangeActiveTab}>
+                    <Tab label='Articles'/>
+                    <Tab label='Recipes'/>
+                </Tabs>
+                {activeTabId === 0 && this.renderArticleColumn()}
+                {activeTabId === 1 &&this.renderRecipeColumn()}
             </Container>
         )
     }

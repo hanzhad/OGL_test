@@ -10,6 +10,13 @@ const modalStyles = makeStyles( (theme: Theme) =>
     createStyles({
         root: {
             marginLeft: 360,
+            [theme.breakpoints.down('sm')]: {
+                marginLeft: 0,
+            },
+            transition: theme.transitions.create(['margin'], {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
         }
     }));
 

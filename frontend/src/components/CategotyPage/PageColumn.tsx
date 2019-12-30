@@ -24,7 +24,7 @@ interface IColumn {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         block: {
-            flex: 1,
+            width: '100%',
             padding: theme.spacing(1),
         },
         header: {
@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(2, 0),
         },
         cardHeader: {
-            display: 'flex',
             alignItems: 'flex-end',
             margin: theme.spacing(1)
         },
@@ -49,12 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         labelText: {
             fontWeight: 'inherit',
-            whiteSpace: 'nowrap',
+            whiteSpace: 'pre-wrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             userSelect: 'none',
-            maxWidth: 260,
-            minWidth: 80,
+
         },
     }),
 );
