@@ -1,7 +1,6 @@
 /**
- *  <p>
- *    Throws error to frontend
- *  </p>
+ *  Throws error to client
+ *
  * @param err
  * @param req
  * @param res

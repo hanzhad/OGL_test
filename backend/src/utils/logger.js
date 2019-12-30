@@ -1,8 +1,10 @@
+/**
+ * Settings for winston
+ */
 import path from 'path';
 import {
   addColors, createLogger, transports, format,
 } from 'winston';
-
 
 const loggerFormat = format.printf((info) => (
   `[${info.timestamp}] [${info.level}]: - ${info.message}`

@@ -1,8 +1,7 @@
 /**
  * Error handler.
- * <p>
- *     Gives error status code and error message to closingHandler.
- * </p>
+ * Gives error status code and error message to closingHandler.
+ *
  * @param next
  * @param error
  */
