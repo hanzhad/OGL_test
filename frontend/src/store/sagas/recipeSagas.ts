@@ -63,7 +63,7 @@ function* remove({payload}: { payload: IRecipe['_id'] }) {
 function* update({payload}: { payload: IRecipe }) {
     try {
         const {data} = yield call(axios.put, `${apiUrl}/recipe/${_.get(payload, '_id')}`, payload);
-        yield put(editRecipeAction(data))
+        yield put(editRecipeAction(data));
         yield put(setRecipeAction(data));
     } catch (e) {
         Toast.errorToast(_.get(e, 'message'));
